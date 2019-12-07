@@ -74,7 +74,7 @@ int dictionary_open_map(struct dict_t *dict) {
 
 int dictionary_generate(struct dict_t *dict, char *input) {
     char line[100] = { 0 };
-    File *file = fopen(input, "r");
+    FILE *file = fopen(input, "r");
     if (file == NULL) {
         fprintf(stderr, "Invalid file %s\n", input);
         return -1;
@@ -86,7 +86,7 @@ int dictionary_generate(struct dict_t *dict, char *input) {
             count++;
         }
     }
-    fclose(fp);
+    fclose(file);
     msync(dict->base, dictionary_len(dict), MS_SYNC);
     return 1;
 }
