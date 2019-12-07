@@ -81,8 +81,8 @@ int dictionary_generate(struct dict_t *dict, char *input) {
     } else {
         int count = 0;
         while (fgets(line, 100, file) != NULL && count < dict->num_items) {
-            dict_t->base[count].word = line;
-            dict_t->base[count].len = strlen(line) - 1;
+            dict->base[count].word = line;
+            dict->base[count].len = strlen(line) - 1;
             count++;
         }
     }
@@ -143,7 +143,7 @@ int dictionary_smaller_than(struct dict_t *dict, size_t n) {
 // Count of words with len == n
 int dictionary_equal_to(struct dict_t *dict, size_t n) {
     int count = 0;
-    for (int i = 0; i < dict_t->num_items; i++) {
+    for (int i = 0; i < dict->num_items; i++) {
         int word_length = dict->base[i].len;
         if (word_length == n) {
             count++;
