@@ -99,6 +99,7 @@ int dictionary_load(struct dict_t *dict) {
 // Unmaps the given dictionary.
 // Free/destroy the underlying dict. Does NOT delete the database file.
 void dictionary_close(struct dict_t *dict) {
+    munmap(dict->base, dictionary_len(dict));
     free(dict->base);
     free(dict);
 }
@@ -106,7 +107,7 @@ void dictionary_close(struct dict_t *dict) {
 // returns pointer to word if it exists, null otherwise
 char* dictionary_exists(struct dict_t *dict, char *word) {
     char* result;
-    for (int i = 0; i < dict_t->num_items; i++) {
+    for (int i = 0; i < dict->num_items; i++) {
         result = dict->base[i].word;
         if (strcmp(word, result) == 0) {
             return result;
@@ -118,7 +119,7 @@ char* dictionary_exists(struct dict_t *dict, char *word) {
 //// Count of words with len > n
 int dictionary_larger_than(struct dict_t *dict, size_t n) {
     int count = 0;
-    for (int i = 0; i < dict_t->num_items; i++) {
+    for (int i = 0; i < dict->num_items; i++) {
         int word_length = dict->base[i].len;
         if (word_length > n) {
             count++;
@@ -128,15 +129,16 @@ int dictionary_larger_than(struct dict_t *dict, size_t n) {
 }
 
 // Count of words with len < n
-int dictionary_smaller_than(struct dict_t *dict, size_t n);
+int dictionary_smaller_than(struct dict_t *dict, size_t n) {
     int count = 0;
-    for (int i = 0; i < dict_t->num_items; i++) {
+    for (int i = 0; i < dict->num_items; i++) {
         int word_length = dict->base[i].len;
         if (word_length < n) {
             count++;
         }
     }
     return count;
+}
 
 // Count of words with len == n
 int dictionary_equal_to(struct dict_t *dict, size_t n) {
